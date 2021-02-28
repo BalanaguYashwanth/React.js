@@ -41,6 +41,7 @@ export default function member() {
                 }
                 //console.log(array)
                 setAlldetails(array)
+               
             })
             .catch(err => console.log(err))
 
@@ -76,14 +77,14 @@ export default function member() {
                                         axios.post('http://127.0.0.1:8000/api/opinion/', {
                                             response: 'accepted',
                                             new_id: mainresult[obj].id,
-                                            user: data
+                                            user: mainresult[obj].option
                                         })
                                     }
                                     else {
                                         axios.post('http://127.0.0.1:8000/api/opinion/', {
                                             response: 'rejected',
                                             new_id: mainresult[obj].id,
-                                            user: data
+                                            user: mainresult[obj].option
                                         })
                                     }
                                 }
@@ -107,7 +108,10 @@ export default function member() {
             flat: house,
             name: name,
             phonenumber: phonenumber
-        }).then(res => console.log(res.data))
+        }).then(res =>{
+             console.log(res.data)
+            location.reload()
+            })
             .catch(err => console.log(err))
     }
 

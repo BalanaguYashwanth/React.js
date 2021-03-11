@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 export default function member() {
     const history = useHistory()
-
     const [name, setName] = useState()
     const [house, setHouse] = useState()
     const [phonenumber, setPhonenumber] = useState()
     const [alldetails, setAlldetails] = useState([])
     const [requests, setRequests] = useState([])
     const [flat, setFlat] = useState()
+    const [flag , setFlag] = useState(false)
+    const [firstname,setFirstname]=useState()
 
     useEffect(() => {
         let axiosConfig = {
@@ -69,10 +71,8 @@ export default function member() {
                                 console.log('done')
                             }
                             else {
-                                if (all != '') {
-
+                                if (all != '') {                                   
                                     let txt;
-
                                     if (confirm(mainresult[obj].message)) {
                                         axios.post('http://127.0.0.1:8000/api/opinion/', {
                                             response: 'accepted',
@@ -95,7 +95,6 @@ export default function member() {
                 })
                 .catch(err => console.log(err.response))
         }
-
     }, [])
 
     function logout() {
@@ -108,6 +107,7 @@ export default function member() {
             flat: house,
             name: name,
             phonenumber: phonenumber
+            
         }).then(res =>{
              console.log(res.data)
             location.reload()
@@ -137,12 +137,24 @@ export default function member() {
         )
     }
 
-
-
-
     return (
         <div>
-            <h4 className="display-4"  > Profile </h4>
+            <div>
+                <div  >
+                <div id="profile"  > 
+                  
+                    
+                 <div id="header" style={{ fontSize:30}}> Confirmation </div>    
+                   
+                 <span >  hey all sample data </span>
+                <br />
+                <button  id="custombutton" > Accept </button>
+                <button id="custombutton"> Decline </button>
+                </div>
+                </div>
+
+            <h4 className="display-4" > Profile </h4>
+
             <input placeholder="enter the house ex:-LH1,LH3 etc" onChange={(e) => setHouse(e.target.value)} />
             <br />
             <input placeholder="enter the phonenumber no." onChange={(e) => setPhonenumber(e.target.value)} />
@@ -158,6 +170,8 @@ export default function member() {
                     <div key={index} > {specific(detail)} </div>
                 ))
             }
+            </div>
+
 
         </div>
     )

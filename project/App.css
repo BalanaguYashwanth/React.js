@@ -40,17 +40,16 @@
 #custombutton{
   margin: 10px;
   border-radius: 10px;
-  padding: 5px 15px; 
+  padding: 5px 15px;  
 }
 
-#profile{
+#popup{
   margin:15%;
   background-color: #eee;
   width:450px;
-  height:20%;
   text-align: center;
   justify-content: center;
-  z-index:-1;
+  z-index:999;
   position:absolute;
   border:1px solid black;
   align-items: center;
@@ -59,10 +58,58 @@
   margin-left: 25%;
   border-radius:10px;
   box-shadow: 0 0 13px lightgrey;
+  overflow: hidden;
 }
 
 #header{
- border-bottom: 1px solid black;
+  border-bottom: 1px solid black;
   width:450px;
   margin-bottom: 20px;
- }
+}
+
+/* #body{  
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  height: 100%;
+  align-items: center;
+} */
+
+#section{
+  background-color: #282c34;
+  height: 100vh;
+}
+
+#profilename{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  top: 100%;
+  background-color: green;
+  width: 30%;
+  height: auto;
+
+}
+
+#body{
+ position: relative;
+  margin: auto auto;
+  top: 25%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  background-position: center; 
+  /* background-color: #ccc;*/
+  background-attachment: fixed;
+  background-color: honeydew;
+}
+
+#button{
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  border: 1px solid black;
+}

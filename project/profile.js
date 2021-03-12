@@ -13,6 +13,7 @@ export default function member() {
     const [flat, setFlat] = useState()
     const [flag , setFlag] = useState(false)
     const [firstname,setFirstname]=useState()
+    const [popupflag,setPopupflag] = useState(false)
 
     useEffect(() => {
         let axiosConfig = {
@@ -137,13 +138,15 @@ export default function member() {
         )
     }
 
+function  popuptoggle()
+{
+    setPopupflag(!popupflag)
+}
     return (
         <div>
-            <div>
-                <div  >
-                <div id="profile"  > 
-                  
-                    
+              {/* <button onClick={popuptoggle} > press me </button> */}
+              {popupflag && <div >  
+                <div id="popup"> 
                  <div id="header" style={{ fontSize:30}}> Confirmation </div>    
                    
                  <span >  hey all sample data </span>
@@ -152,27 +155,44 @@ export default function member() {
                 <button id="custombutton"> Decline </button>
                 </div>
                 </div>
-
-            <h4 className="display-4" > Profile </h4>
-
-            <input placeholder="enter the house ex:-LH1,LH3 etc" onChange={(e) => setHouse(e.target.value)} />
+                }
+            <div id="section" >
+              
+            <div id="body">
+            {/* <h4 className="display-4" id="profile"> Profile </h4>
+            <input placeholder="enter the name" />
             <br />
             <input placeholder="enter the phonenumber no." onChange={(e) => setPhonenumber(e.target.value)} />
             <br />
+            <input placeholder="enter the house ex:-LH1,LH3 etc" onChange={(e) => setHouse(e.target.value)} />
+            <br />
             <button onClick={posting} > submit </button>
             <button onClick={logout} > logout   </button>
-
             <br />
             <br />
-
             {
                 alldetails.map((detail, index) => (
                     <div key={index} > {specific(detail)} </div>
                 ))
-            }
+            } */}
+
+            <form id="form"  className="justify-content-center">
+                <div className="form-row"  >
+                <div id="profilename" className="mx-auto" >
+                    <i className="fa fa-user-circle-o mx-auto" style={{fontSize:80, textAlign:'center'}}> <p style={{fontStyle: 'oblique'}} > profile </p> </i>
+                </div>
+                    <div className="form-group  col-md " >
+                            <input type="text"  placeholder="enter the name" className="form-control my-3 " />   
+                            <input type="text"  placeholder="enter the phonenumber" className="form-control my-3" />
+                            <input type="text"  placeholder="enter the flat no." className="form-control my-3" />
+                            <input type="text"  placeholder="enter the email id" className="form-control my-1" />
+                            <button className="mx-auto btn btn-light"  id="button"  > submit </button>
+                    </div>
+                </div>
+            </form>
+
             </div>
-
-
+            </div>
         </div>
     )
 }

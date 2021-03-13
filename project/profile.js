@@ -6,14 +6,18 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 export default function member() {
     const history = useHistory()
     const [name, setName] = useState()
-    const [house, setHouse] = useState()
-    const [phonenumber, setPhonenumber] = useState()
+    const [house, setHouse] = useState("")
+    const [phonenumber, setPhonenumber] = useState("")
     const [alldetails, setAlldetails] = useState([])
     const [requests, setRequests] = useState([])
     const [flat, setFlat] = useState()
-    const [flag , setFlag] = useState(false)
-    const [firstname,setFirstname]=useState()
-    const [popupflag,setPopupflag] = useState(false)
+    const [flag, setFlag] = useState(false)
+    const [firstname, setFirstname] = useState()
+    const [popupflag, setPopupflag] = useState(false)
+    const [message, setMessage] = useState('No Requests')
+    const [option, setOption] = useState()
+    const [id, setId] = useState()
+    const [response, setResponse] = useState()
 
     useEffect(() => {
         let axiosConfig = {
@@ -44,7 +48,7 @@ export default function member() {
                 }
                 //console.log(array)
                 setAlldetails(array)
-               
+
             })
             .catch(err => console.log(err))
 
@@ -72,22 +76,26 @@ export default function member() {
                                 console.log('done')
                             }
                             else {
-                                if (all != '') {                                   
+                                if (all != '') {
                                     let txt;
-                                    if (confirm(mainresult[obj].message)) {
-                                        axios.post('http://127.0.0.1:8000/api/opinion/', {
-                                            response: 'accepted',
-                                            new_id: mainresult[obj].id,
-                                            user: mainresult[obj].option
-                                        })
-                                    }
-                                    else {
-                                        axios.post('http://127.0.0.1:8000/api/opinion/', {
-                                            response: 'rejected',
-                                            new_id: mainresult[obj].id,
-                                            user: mainresult[obj].option
-                                        })
-                                    }
+                                    setMessage(mainresult[obj].message)
+                                    setOption(mainresult[obj].option)
+                                    setId(mainresult[obj].id)
+                                    setPopupflag(true)
+                                    // if (confirm(mainresult[obj].message)) {
+                                    //     axios.post('http://127.0.0.1:8000/api/opinion/', {
+                                    //         response: 'accepted',
+                                    //         new_id: mainresult[obj].id,
+                                    //         user: mainresult[obj].option
+                                    //     })
+                                    // }
+                                    // else {
+                                    //     axios.post('http://127.0.0.1:8000/api/opinion/', {
+                                    //         response: 'rejected',
+                                    //         new_id: mainresult[obj].id,
+                                    //         user: mainresult[obj].option
+                                    //     })
+                                    // }
                                 }
                             }
 
@@ -104,16 +112,29 @@ export default function member() {
     }
 
     function posting() {
-        axios.post('http://127.0.0.1:8000/api/member/', {
-            flat: house,
-            name: name,
-            phonenumber: phonenumber
-            
-        }).then(res =>{
-             console.log(res.data)
-            location.reload()
+        if(phonenumber!="" && flat!="" )
+        {   
+        if(phonenumber.length==10)
+        {
+            axios.post('http://127.0.0.1:8000/api/member/', {
+                flat: house,
+                name: name,
+                phonenumber: phonenumber
+
+            }).then(res => {
+                console.log(res.data)
+                location.reload()
             })
-            .catch(err => console.log(err))
+                .catch(err => console.log(err))
+        }
+        else{
+            setResponse('phonenumber must be 10 digits')
+        }
+        
+    }
+    else{
+        setResponse('please enter valid details')
+    }
     }
 
     function specific(data) {
@@ -131,35 +152,56 @@ export default function member() {
             <div>
                 {
                     arrs.map((arr, index) => (
-                        <p key={index}  >  Registered address :-   {arr.flat} {arr.name} {arr.phonenumber} </p>
+                        <p key={index}  >  Registered user :-   {arr.flat} {arr.name} {arr.phonenumber} </p>
                     ))
                 }
             </div>
         )
     }
 
-function  popuptoggle()
-{
-    setPopupflag(!popupflag)
-}
+    async function acceptrequest()
+    {
+        await axios.post('http://127.0.0.1:8000/api/opinion/', {
+            response: 'accepted',
+            new_id: id,
+            user: option,
+            
+        })
+        setPopupflag(false)
+    }
+
+    async function declinerequest()
+    {  
+        await axios.post('http://127.0.0.1:8000/api/opinion/', {
+            response: 'rejected',
+            new_id: id,
+            user: option
+        })
+        setPopupflag(false)
+    }
+
+    function popuptoggle() {
+        setPopupflag(!popupflag)
+    }
+
     return (
         <div>
-              {/* <button onClick={popuptoggle} > press me </button> */}
-              {popupflag && <div >  
-                <div id="popup"> 
-                 <div id="header" style={{ fontSize:30}}> Confirmation </div>    
-                   
-                 <span >  hey all sample data </span>
-                <br />
-                <button  id="custombutton" > Accept </button>
-                <button id="custombutton"> Decline </button>
+            {/* <button onClick={popuptoggle} > press me </button> */}
+            {popupflag && <div >
+                <div id="popup">
+                    <div id="header" style={{ fontSize: 30 }}> Confirmation </div>
+
+                    <span > {message} </span>
+                    <br />
+                    <button id="custombutton"  onClick={acceptrequest} > Accept </button>
+                    <button id="custombutton" onClick={declinerequest} > Decline </button>
                 </div>
-                </div>
-                }
+            </div>
+            }
             <div id="section" >
-              
-            <div id="body">
-            {/* <h4 className="display-4" id="profile"> Profile </h4>
+
+                <div id="body">
+                    {/* <h4 className="display-4" id="profile"> Profile </h4>
             <input placeholder="enter the name" />
             <br />
             <input placeholder="enter the phonenumber no." onChange={(e) => setPhonenumber(e.target.value)} />
@@ -175,23 +217,38 @@ function  popuptoggle()
                     <div key={index} > {specific(detail)} </div>
                 ))
             } */}
-
-            <form id="form"  className="justify-content-center">
-                <div className="form-row"  >
-                <div id="profilename" className="mx-auto" >
-                    <i className="fa fa-user-circle-o mx-auto" style={{fontSize:80, textAlign:'center'}}> <p style={{fontStyle: 'oblique'}} > profile </p> </i>
-                </div>
-                    <div className="form-group  col-md " >
-                            <input type="text"  placeholder="enter the name" className="form-control my-3 " />   
-                            <input type="text"  placeholder="enter the phonenumber" className="form-control my-3" />
-                            <input type="text"  placeholder="enter the flat no." className="form-control my-3" />
-                            <input type="text"  placeholder="enter the email id" className="form-control my-1" />
-                            <button className="mx-auto btn btn-light"  id="button"  > submit </button>
+                    
+                    <div id="form" className="justify-content-center">
+                        
+                        <div className="form-row"  >
+                            <div id="profilename" className="mx-auto" >
+                                <i className="fa fa-user-circle-o mx-auto" style={{ fontSize: 80, textAlign: 'center', textDecorationLine: 'underline', textDecorationColor: 'green' }}> <p style={{ fontStyle: 'oblique' }} > profile <button className="mx-auto btn btn-light my-2" style={{border:0, backgroundColor:'green'}} id="buttonprofile" onClick={logout}> <i className="fa fa-sign-out" style={{fontSize:36}}></i>  </button>   </p> </i>
+                            </div>
+                            
+                            <div className="form-group  col-md " >
+                            <div style={{ textAlign: 'center', alignItems: 'center' }}>
+                                     My Profile   
+                                    
+                                </div>
+                                {/* <input type="text"  placeholder="enter the name" className="form-control my-3 " />    */}
+                                <input type="number" placeholder="enter the phonenumber" className="form-control my-3" onChange={(e) => setPhonenumber(e.target.value)} />
+                                <input type="text" placeholder="enter the flat no. ex:-LH1,LH3 etc" className="form-control my-3" onChange={(e) => setHouse(e.target.value)} />
+                                <button className="mx-auto btn btn-light my-2" id="buttonprofile" onClick={posting} > submit </button>
+                                <div style={{ textAlign: 'center', alignItems: 'center' }}>
+                                {response && response}
+                                    {
+                                        
+                                        alldetails.map((detail, index) => (
+                                            <div key={index} > {specific(detail)} </div>
+                                        ))
+                                    }
+                                </div>
+                                    
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </form>
 
-            </div>
+                </div>
             </div>
         </div>
     )

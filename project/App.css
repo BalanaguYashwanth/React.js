@@ -89,7 +89,17 @@
   background-color: green;
   width: 30%;
   height: auto;
+}
 
+#profilenamelogin{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  top: 100%;
+  background-color: green;
+  width: 100%;
+  height: auto;
 }
 
 #body{
@@ -112,4 +122,13 @@
   text-align: center;
   display: flex;
   border: 1px solid black;
+}
+
+#buttonprofile{
+  display: flex;
+  border: 1px solid black;
+}
+
+input{
+  text-align: center;
 }
